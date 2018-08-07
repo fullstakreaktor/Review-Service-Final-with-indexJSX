@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  database:
+    build: Database/
+    image: mysql/mysql-server/5.7
+    ports:
+        - 3306:3306
+    environment:
+        MYSQL_DATABASE: review_db
+        MYSQL_USER: root
+        MYSQL_ROOT_PASSWORD: mysqlpwd
+
+  review-component:
+    build: Review-Service/
+    depends_on:
+      - 'database'
+    links:
+      - 'database'
+    restart: on-failure
+    ports: 
+      - '3002:3002'
